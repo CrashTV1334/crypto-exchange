@@ -8,6 +8,7 @@ import CryptoExchangeAddress from "../contractsData/CryptoExchange-address.json"
 
 import Navigation from "./Navbar";
 import { Spinner } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -110,7 +111,7 @@ function App() {
   };
 
   return (
-    <div>
+    <div className="container-class">
       <Navigation web3Handler={web3Handler} account={account} />
       {loading ? (
         <div
@@ -126,36 +127,89 @@ function App() {
         </div>
       ) : (
         <div>
-          <button onClick={handleShowBalance}>Show Balance</button>
-          {showBalance ? (
-            <div>
-              <p>Bank Pumpcoins: {avlPMP}</p>
-              <p>Bank Napcoins: {avlNPN}</p>
-              <br />
-              <p>User Pumpcoins: {userPMP}</p>
-              <p>User Napcoins: {userNPN}</p>
-            </div>
-          ) : (
-            <p></p>
-          )}
+          <table className="margin-class">
+            <tr>
+              <td className="left-col-class">
+                <Button
+                  onClick={handleShowBalance}
+                  variant="outline-success"
+                  className="button-width-class"
+                >
+                  Show Balance
+                </Button>
+                <br></br>
+                <br></br>
+                {showBalance ? (
+                  <table>
+                    <tr>
+                      <span className="font-class">Pumpcoins in Pool: </span>
+                      {avlPMP}
+                    </tr>
+                    <tr>
+                      <span className="font-class">Napcoins in Pool: </span>
+                      {avlNPN}
+                    </tr>
+                    <tr></tr>
+                    <tr></tr>
+                    <br></br>
+                    <br></br>
+                    <tr>
+                      <span className="font-class">Pumpcoins in Account: </span>
+                      {userPMP}
+                    </tr>
+                    <tr>
+                      <span className="font-class">Napcoins in Account: </span>
+                      {userNPN}
+                    </tr>
+                  </table>
+                ) : (
+                  <p></p>
+                )}
+              </td>
 
+              <td className="center-class">
+                <p className="font-class-1">Exchange PMP for NPN</p>
+                <form onSubmit={handlePMPtoNPN}>
+                  <input
+                    type="text"
+                    pattern="[0-9]*"
+                    id="PMPamount"
+                    placeholder="Amount of PMP"
+                  />
+                  <button type="submit">PMP to NPN</button>
+                </form>
+                <br></br>
+                <p className="font-class-1">Exchange NPN for PMP</p>
+                {/* <ExchangeHome cryptoExchange={cryptoExchange} /> */}
+                <form onSubmit={handleNPNtoPMP}>
+                  <input
+                    type="text"
+                    pattern="[0-9]*"
+                    id="NPNamount"
+                    placeholder="Amount of NPN"
+                  />
+                  <button type="submit">NPN to PMP</button>
+                </form>
+              </td>
+            </tr>
+          </table>
+          <div className="lst-row-class">
+            <br></br>
+            <br></br>
+            <Button
+              onClick={handleAirdropPMP}
+              className="rght-margin"
+              variant="outline-dark"
+            >
+              Airdrop PMP
+            </Button>
+            <Button onClick={handleAirdropNPN} variant="outline-dark">
+              Airdrop NPN
+            </Button>
+          </div>
           <br></br>
-          <p>PMP to NPN</p>
-          {/* <ExchangeHome cryptoExchange={cryptoExchange} /> */}
-          <form onSubmit={handlePMPtoNPN}>
-            <input type="text" pattern="[0-9]*" id="PMPamount" />
-            <button type="submit">PMP to NPN</button>
-          </form>
           <br></br>
-          <p>NPN to PMP</p>
-          {/* <ExchangeHome cryptoExchange={cryptoExchange} /> */}
-          <form onSubmit={handleNPNtoPMP}>
-            <input type="text" pattern="[0-9]*" id="NPNamount" />
-            <button type="submit">NPN to PMP</button>
-          </form>
-
-          <button onClick={handleAirdropPMP}>Airdrop PMP</button>
-          <button onClick={handleAirdropNPN}>Airdrop NPN</button>
+          <div className="float-right">- Made by Team SurfShore</div>
         </div>
       )}
     </div>

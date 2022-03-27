@@ -1,0 +1,13 @@
+@import url("https://fonts.googleapis.com/css2?family=MuseoModerno:wght@100;200;600&display=swap");
+.heading-class {
+  font-family: "MuseoModerno", cursive;
+  font-size: 3rem;
+}
+
+.right-float {
+  float: right;
+}
+
+.center-class {
+  margin-left: 45%;
+}
