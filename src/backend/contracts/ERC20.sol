@@ -9,7 +9,7 @@ interface IERC20 {
 
     function transfer(address recipient, uint256 amount) external returns (bool);
     function approve(address spender, uint256 amount) external returns (bool);
-    function approve(address owner, address spender, uint256 amount) external returns (bool);
+    // function approve(address owner, address spender, uint256 amount) external returns (bool);
     function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
 
     function _mint(address receiver, uint amount) external;
@@ -59,11 +59,11 @@ contract ERC20 is IERC20 {
         return true;
     }
 
-    function approve(address owner, address delegate, uint256 numTokens) public override returns (bool) {
-        allowed[owner][delegate] = numTokens;
-        emit Approval(owner, delegate, numTokens);
-        return true;
-    }
+    // function approve(address owner, address delegate, uint256 numTokens) public override returns (bool) {
+    //     allowed[owner][delegate] = numTokens;
+    //     emit Approval(owner, delegate, numTokens);
+    //     return true;
+    // }
 
     function allowance(address owner, address delegate) public override view returns (uint) {
         return allowed[owner][delegate];
@@ -74,7 +74,7 @@ contract ERC20 is IERC20 {
         require(numTokens <= allowed[owner][msg.sender]);
 
         balances[owner] = balances[owner]-numTokens;
-        allowed[owner][msg.sender] = allowed[owner][msg.sender]+numTokens;
+        allowed[owner][msg.sender] = allowed[owner][msg.sender]-numTokens;
         balances[buyer] = balances[buyer]+numTokens;
         emit Transfer(owner, buyer, numTokens);
         return true;
