@@ -11,15 +11,21 @@ import { Spinner } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 
 function App() {
+  const CONSTANT_VALUE = 1000000;
+  const DECIMAL = 100000000000000;
+
   const [loading, setLoading] = useState(true);
   const [account, setAccount] = useState(null);
   const [showBalance, setShowBalance] = useState(false);
 
-  const [avlPMP, setAvlPMP] = useState(0);
-  const [avlNPN, setAvlNPN] = useState(0);
+  const [avlPMP, setAvlPMP] = useState("0");
+  const [avlNPN, setAvlNPN] = useState("0");
 
-  const [userPMP, setUserPMP] = useState(0);
-  const [userNPN, setUserNPN] = useState(0);
+  const [userPMP, setUserPMP] = useState("0");
+  const [userNPN, setUserNPN] = useState("0");
+
+  const [convPMP, setConvPMP] = useState(-1);
+  const [convNPN, setConvNPN] = useState(-1);
 
   const [cryptoExchange, setCryptoExchange] = useState({});
 
@@ -56,11 +62,11 @@ function App() {
     const uPMP = await cryptoExchange.showUsrPMP();
     const uNPN = await cryptoExchange.showUsrNPN();
 
-    setAvlPMP(avPMP.toString());
-    setAvlNPN(avNPN.toString());
+    setAvlPMP(avPMP);
+    setAvlNPN(avNPN);
 
-    setUserPMP(uPMP.toString());
-    setUserNPN(uNPN.toString());
+    setUserPMP(uPMP);
+    setUserNPN(uNPN);
 
     setLoading(false);
   };
@@ -71,9 +77,45 @@ function App() {
 
     event.preventDefault();
 
+    const currAvlPMP = avlPMP / DECIMAL;
+    const currAvlNPN = avlNPN / DECIMAL;
+
+    const newAvlPMP = currAvlPMP + amount;
+    const newAvlNPN = CONSTANT_VALUE / newAvlPMP;
+
+    const debitNPN = Math.floor((currAvlNPN - newAvlNPN) * DECIMAL);
+    const creditPMP = Math.floor(amount * DECIMAL);
+
+    setConvNPN(-1);
     setShowBalance(false);
 
-    await cryptoExchange.PMPtoNPN(amount);
+    await cryptoExchange.PMPtoNPN(creditPMP, debitNPN);
+  };
+
+  const handleOnChangePMPtoNPN = async (event) => {
+    var amt = document.getElementById("PMPamount").value;
+    var amount = parseInt(amt);
+
+    const currAvlPMP = avlPMP / DECIMAL;
+    const currAvlNPN = avlNPN / DECIMAL;
+
+    const newAvlPMP = currAvlPMP + amount;
+    const newAvlNPN = CONSTANT_VALUE / newAvlPMP;
+
+    const debitNPN = Math.floor((currAvlNPN - newAvlNPN) * DECIMAL);
+
+    if (isNaN(debitNPN)) {
+      setConvNPN(-1);
+    } else {
+      setConvNPN(debitNPN);
+    }
+    // const creditPMP = Math.floor(amount * DECIMAL);
+
+    // console.log("New Available PMP: ", newAvlPMP);
+    // console.log("New Available NPN: ", newAvlNPN);
+
+    // console.log("Credit PMP: ", creditPMP);
+    // console.log("Debit NPN: ", debitNPN);
   };
 
   const handleNPNtoPMP = async (event) => {
@@ -82,9 +124,46 @@ function App() {
 
     event.preventDefault();
 
+    const currAvlPMP = avlPMP / DECIMAL;
+    const currAvlNPN = avlNPN / DECIMAL;
+
+    const newAvlNPN = currAvlNPN + amount;
+    const newAvlPMP = CONSTANT_VALUE / newAvlNPN;
+
+    const debitPMP = Math.floor((currAvlPMP - newAvlPMP) * DECIMAL);
+    const creditNPN = Math.floor(amount * DECIMAL);
+    // console.log(creditNPN);
+    // console.log(debitPMP);
+
+    setConvPMP(-1);
     setShowBalance(false);
 
-    await cryptoExchange.NPNtoPMP(amount);
+    await cryptoExchange.NPNtoPMP(creditNPN, debitPMP);
+  };
+
+  const handleOnChangeNPNtoPMP = async (event) => {
+    var amt = document.getElementById("NPNamount").value;
+    var amount = parseInt(amt);
+
+    const currAvlPMP = avlPMP / DECIMAL;
+    const currAvlNPN = avlNPN / DECIMAL;
+
+    const newAvlNPN = currAvlNPN + amount;
+    const newAvlPMP = CONSTANT_VALUE / newAvlNPN;
+
+    const debitPMP = Math.floor((currAvlPMP - newAvlPMP) * DECIMAL);
+    // const creditNPN = Math.floor(amount * DECIMAL);
+
+    if (isNaN(debitPMP)) {
+      setConvPMP(-1);
+    } else {
+      setConvPMP(debitPMP);
+    }
+    // console.log("New Available PMP: ", newAvlPMP);
+    // console.log("New Available NPN: ", newAvlNPN);
+
+    // console.log("Credit NPN: ", creditNPN);
+    // console.log("Debit PMP: ", debitPMP);
   };
 
   const handleShowBalance = async () => {
@@ -94,11 +173,11 @@ function App() {
     const uPMP = await cryptoExchange.showUsrPMP();
     const uNPN = await cryptoExchange.showUsrNPN();
 
-    setAvlPMP(avPMP.toString());
-    setAvlNPN(avNPN.toString());
+    setAvlPMP(avPMP);
+    setAvlNPN(avNPN);
 
-    setUserPMP(uPMP.toString());
-    setUserNPN(uNPN.toString());
+    setUserPMP(uPMP);
+    setUserNPN(uNPN);
   };
 
   const handleAirdropPMP = async () => {
@@ -143,11 +222,11 @@ function App() {
                   <table>
                     <tr>
                       <span className="font-class">Pumpcoins in Pool: </span>
-                      {avlPMP}
+                      {avlPMP / DECIMAL}
                     </tr>
                     <tr>
                       <span className="font-class">Napcoins in Pool: </span>
-                      {avlNPN}
+                      {avlNPN / DECIMAL}
                     </tr>
                     <tr></tr>
                     <tr></tr>
@@ -155,11 +234,11 @@ function App() {
                     <br></br>
                     <tr>
                       <span className="font-class">Pumpcoins in Account: </span>
-                      {userPMP}
+                      {userPMP / DECIMAL}
                     </tr>
                     <tr>
                       <span className="font-class">Napcoins in Account: </span>
-                      {userNPN}
+                      {userNPN / DECIMAL}
                     </tr>
                   </table>
                 ) : (
@@ -175,8 +254,16 @@ function App() {
                     pattern="[0-9]*"
                     id="PMPamount"
                     placeholder="Amount of PMP"
+                    onChange={handleOnChangePMPtoNPN}
                   />
                   <button type="submit">PMP to NPN</button>
+                  {convNPN !== -1 ? (
+                    <p>
+                      You will get <strong>{convNPN / DECIMAL}</strong> NPN
+                    </p>
+                  ) : (
+                    <p></p>
+                  )}
                 </form>
                 <br></br>
                 <p className="font-class-1">Exchange NPN for PMP</p>
@@ -187,8 +274,16 @@ function App() {
                     pattern="[0-9]*"
                     id="NPNamount"
                     placeholder="Amount of NPN"
+                    onChange={handleOnChangeNPNtoPMP}
                   />
                   <button type="submit">NPN to PMP</button>
+                  {convPMP !== -1 ? (
+                    <p>
+                      You will get <strong>{convPMP / DECIMAL}</strong> PMP
+                    </p>
+                  ) : (
+                    <p></p>
+                  )}
                 </form>
               </td>
             </tr>
