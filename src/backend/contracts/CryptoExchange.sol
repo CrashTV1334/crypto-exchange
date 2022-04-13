@@ -67,7 +67,7 @@ contract CryptoExchange {
         address recipient = msg.sender;
         uint pmpAmt = npnAmt;
 
-        tokenNPN.approve(recipient, address(this), pmpAmt);
+        // tokenNPN.approve(recipient, address(this), pmpAmt);
 
         _safeTransferFrom(tokenNPN, recipient, address(this), pmpAmt);
         tokenPMP.transfer(recipient, npnAmt);  
@@ -79,7 +79,7 @@ contract CryptoExchange {
 
         uint convFactor = tokenPMP._decimals();
 
-        tokenPMP.approve(recipient, address(this), pmpAmt*convFactor);
+        // tokenPMP.approve(recipient, address(this), pmpAmt*convFactor);
 
         _safeTransferFrom(tokenPMP, recipient, address(this), pmpAmt*convFactor);
         tokenNPN.transfer(recipient, npnAmt);  
