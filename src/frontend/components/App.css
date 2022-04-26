@@ -1,5 +1,37 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@668&display=swap");
 
+.btnTag {
+  border: 2px solid black;
+  background-color: white;
+  color: black;
+  padding: 3px 8px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Orange */
+.warningTag {
+  border-color: #ff9800;
+  color: orange;
+}
+
+.warningTag:hover {
+  background: #ff9800;
+  color: white;
+}
+
+/* Green */
+.successTag {
+  border-color: #04AA6D;
+  color: green;
+}
+
+.successTag:hover {
+  background-color: #04AA6D;
+  color: white;
+}
+
 .button-width-class {
   width: 70%;
 }
@@ -62,4 +94,15 @@
 
 .rght-margin {
   margin-right: 5%;
+}
+
+.formInput {
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin-bottom: 10px
+}
+
+.lst-row-class {
+  margin-bottom: 50px;
 }

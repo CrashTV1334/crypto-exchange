@@ -1,3 +1,4 @@
+/* global BigInt */
 import "./App.css";
 
 import { useState } from "react";
@@ -122,7 +123,7 @@ function App() {
 
     let amount = parseInt(PMPallowance._hex, 16);
 
-    setApprovedPMP(amount/10);
+    setApprovedPMP(amount/DECIMAL);
   }
 
   const updateNPNAllowance = async () => {
@@ -131,16 +132,18 @@ function App() {
 
     let amount = parseInt(NPNallowance._hex, 16);
 
-    setApprovedNPN(amount);
+    setApprovedNPN(amount/DECIMAL);
   }
 
   const handlePMPtoNPN = async (event) => {
-    var amt = document.getElementById("PMPamount").value;
-    var amount = parseInt(amt);
+    // var amt = document.getElementById("PMPamount").value;
+    // var amount = parseInt(amt);
+
+    var amt = parseInt(document.getElementById("PMPamount").value);
+    var amount = amt;
 
     event.preventDefault();
 
-// <<<<<<< market-maker
     const currAvlPMP = avlPMP / DECIMAL;
     const currAvlNPN = avlNPN / DECIMAL;
 
@@ -158,8 +161,11 @@ function App() {
   };
 
   const handleOnChangePMPtoNPN = async (event) => {
-    var amt = document.getElementById("PMPamount").value;
-    var amount = parseInt(amt);
+    // var amt = document.getElementById("PMPamount").value;
+    // var amount = parseInt(amt);
+
+    var amt = parseInt(document.getElementById("PMPamount").value);
+    var amount = amt;
 
     const currAvlPMP = avlPMP / DECIMAL;
     const currAvlNPN = avlNPN / DECIMAL;
@@ -174,27 +180,17 @@ function App() {
     } else {
       setConvNPN(debitNPN);
     }
-    // const creditPMP = Math.floor(amount * DECIMAL);
-
-    // console.log("New Available PMP: ", newAvlPMP);
-    // console.log("New Available NPN: ", newAvlNPN);
-
-    // console.log("Credit PMP: ", creditPMP);
-    // console.log("Debit NPN: ", debitNPN);
-// =======
-    // setShowBalance(false);
-//      await cryptoExchange.PMPtoNPN(amount);
-//     await updatePMPAllowance();
-// >>>>>>> master
   };
 
   const handleNPNtoPMP = async (event) => {
-    var amt = document.getElementById("NPNamount").value;
-    var amount = parseInt(amt);
+    // var amt = document.getElementById("NPNamount").value;
+    // var amount = parseInt(amt);
+
+    var amt = parseInt(document.getElementById("NPNamount").value);
+    var amount = amt;
 
     event.preventDefault();
 
-// <<<<<<< market-maker
     const currAvlPMP = avlPMP / DECIMAL;
     const currAvlNPN = avlNPN / DECIMAL;
 
@@ -203,8 +199,6 @@ function App() {
 
     const debitPMP = Math.floor((currAvlPMP - newAvlPMP) * DECIMAL);
     const creditNPN = Math.floor(amount * DECIMAL);
-    // console.log(creditNPN);
-    // console.log(debitPMP);
 
     setConvPMP(-1);
     setShowBalance(false);
@@ -224,24 +218,13 @@ function App() {
     const newAvlPMP = CONSTANT_VALUE / newAvlNPN;
 
     const debitPMP = Math.floor((currAvlPMP - newAvlPMP) * DECIMAL);
-    // const creditNPN = Math.floor(amount * DECIMAL);
 
     if (isNaN(debitPMP)) {
       setConvPMP(-1);
     } else {
       setConvPMP(debitPMP);
     }
-    // console.log("New Available PMP: ", newAvlPMP);
-    // console.log("New Available NPN: ", newAvlNPN);
 
-    // console.log("Credit NPN: ", creditNPN);
-    // console.log("Debit PMP: ", debitPMP);
-// =======
-    // setShowBalance(false);
-
-//     await cryptoExchange.NPNtoPMP(amount);
-//     await updateNPNAllowance();
-// >>>>>>> master
   };
 
   const handleShowBalance = async () => {
@@ -268,9 +251,8 @@ function App() {
   };
 
   const handleApprovePMP = async (event) => {
-    var amt = document.getElementById("PMPamount").value;
-    console.log(amt);
-    var amount = parseInt(amt) * DECIMAL;
+    var amt = parseInt(document.getElementById("PMPamount").value);
+    var amount = amt * DECIMAL;
 
     event.preventDefault();
 
@@ -284,8 +266,8 @@ function App() {
   };
 
   const handleApproveNPN = async (event) => {
-    var amt = document.getElementById("NPNamount").value;
-    var amount = parseInt(amt) * DECIMAL;
+    var amt = parseInt(document.getElementById("NPNamount").value);
+    var amount = amt * DECIMAL;
 
     event.preventDefault();
 
@@ -362,12 +344,9 @@ function App() {
                     id="PMPamount"
                     placeholder="Amount of PMP"
                     onChange={handleOnChangePMPtoNPN}
+                    class="formInput"
                   />
-                  <hr></hr>
-                  <span class="font-class">Approved Amount : </span> {approvedPMP}
-                  <button type="button" onClick={handleApprovePMP}>Approve</button>
-                  <hr></hr>
-                  <button type="submit">PMP to NPN</button>
+
                   {convNPN !== -1 ? (
                     <p>
                       You will get <strong>{convNPN / DECIMAL}</strong> NPN
@@ -375,6 +354,16 @@ function App() {
                   ) : (
                     <p></p>
                   )}
+
+                  <hr></hr>
+                  <span class="font-class">Approved Amount : </span> {approvedPMP}
+
+                  <br></br>
+                  <button type="button" class="btnTag warningTag" onClick={handleApprovePMP}>Approve</button>
+                  
+                  <hr></hr>
+                  <button type="submit" class="btnTag successTag">PMP to NPN</button>
+                  
                 </form>
                 <br></br>
                 <p className="font-class-1">Exchange NPN for PMP</p>
@@ -386,12 +375,9 @@ function App() {
                     id="NPNamount"
                     placeholder="Amount of NPN"
                     onChange={handleOnChangeNPNtoPMP}
+                    class="formInput"
                   />
-                  <hr></hr>
-                  <span class="font-class">Approved Amount : </span> {approvedNPN}
-                  <button type="button" onClick={handleApproveNPN}>Approve</button>
-                  <hr></hr>
-                  <button type="submit">NPN to PMP</button>
+
                   {convPMP !== -1 ? (
                     <p>
                       You will get <strong>{convPMP / DECIMAL}</strong> PMP
@@ -399,10 +385,20 @@ function App() {
                   ) : (
                     <p></p>
                   )}
+
+                  <hr></hr>
+                  <span class="font-class">Approved Amount : </span> {approvedNPN}
+                  <br></br>
+
+                  <button type="button" class="btnTag warningTag" onClick={handleApproveNPN}>Approve</button>
+                  <hr></hr>
+                  <button type="submit" class="btnTag successTag">NPN to PMP</button>
+                  
                 </form>
               </td>
             </tr>
           </table>
+
           <div className="lst-row-class">
             <br></br>
             <br></br>
@@ -417,9 +413,7 @@ function App() {
               Airdrop NPN
             </Button>
           </div>
-          <br></br>
-          <br></br>
-          <div className="float-right">- Made by Team SurfShore</div>
+          
         </div>
       )}
     </div>
