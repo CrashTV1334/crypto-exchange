@@ -62,7 +62,11 @@ contract CryptoExchange {
         address recipient = creator;
         // uint pmpAmt = npnAmt;
 
-        tokenNPN.approve(recipient, address(this), npnAmt);
+//<<<<<<< market-maker
+//        tokenNPN.approve(recipient, address(this), npnAmt);
+//=======
+        // tokenNPN.approve(recipient, address(this), pmpAmt);
+//>>>>>>> master
 
         _safeTransferFrom(tokenNPN, recipient, address(this), npnAmt);
         tokenPMP.transfer(recipient, pmpAmt);  
@@ -73,7 +77,11 @@ contract CryptoExchange {
 
         // uint convFactor = tokenPMP._decimals();
 
-        tokenPMP.approve(recipient, address(this), pmpAmt);
+//<<<<<<< market-maker
+//        tokenPMP.approve(recipient, address(this), pmpAmt);
+//=======
+        // tokenPMP.approve(recipient, address(this), pmpAmt*convFactor);
+//>>>>>>> master
 
         _safeTransferFrom(tokenPMP, recipient, address(this), pmpAmt);
         tokenNPN.transfer(recipient, npnAmt);  
