@@ -335,7 +335,7 @@ function App() {
                 )}
               </td>
 
-              <td className="center-class">
+              <td className="center-class center-class-padding">
                 <p className="font-class-1">Exchange PMP for NPN</p>
                 <form onSubmit={handlePMPtoNPN}>
                   <input
@@ -365,9 +365,12 @@ function App() {
                   <button type="submit" class="btnTag successTag">PMP to NPN</button>
                   
                 </form>
-                <br></br>
+                
+              </td>
+
+              <td className="center-class center-class-padding">
                 <p className="font-class-1">Exchange NPN for PMP</p>
-                {/* <ExchangeHome cryptoExchange={cryptoExchange} /> */}
+
                 <form onSubmit={handleNPNtoPMP}>
                   <input
                     type="text"

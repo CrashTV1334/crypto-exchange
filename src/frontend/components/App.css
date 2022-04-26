@@ -72,24 +72,25 @@
 
 .container-class {
   margin-top: 2%;
-  margin-right: 20%;
-  margin-left: 20%;
+  margin-right: 13%;
+  margin-left: 13%;
 }
 
 .margin-class {
-  margin-top: 10%;
+  margin-top: 7%;
 }
 
 .center-class {
   text-align: center;
+  /* padding: 14px; */
+}
+
+.center-class-padding {
+  padding: 34px;
 }
 
 .left-col-class {
   width: 60%;
-}
-
-.lst-row-class {
-  margin-left: 30%;
 }
 
 .rght-margin {
@@ -99,10 +100,11 @@
 .formInput {
   border: 1px solid black;
   border-radius: 5px;
-  padding: 5px 10px;
+  padding: 5px 15px;
   margin-bottom: 10px
 }
 
 .lst-row-class {
-  margin-bottom: 50px;
+  text-align: center;
+  margin: 30px;
 }
