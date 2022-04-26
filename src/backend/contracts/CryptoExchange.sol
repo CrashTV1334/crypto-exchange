@@ -12,8 +12,8 @@ contract CryptoExchange {
 
     constructor () {
         creator = msg.sender;
-        tokenNPN = new Token("napcoin", "NPN", creator, 0);
-        tokenPMP = new Token("pmpcoin", "PMP", creator, 1);
+        tokenNPN = new Token("napcoin", "NPN", creator, 14);
+        tokenPMP = new Token("pmpcoin", "PMP", creator, 14);
     }
 
     function uint2str(uint _i) internal pure returns (string memory _uintAsString) {
@@ -26,19 +26,14 @@ contract CryptoExchange {
             len++;
             j /= 10;
         }
-        bytes memory bstr = new bytes(len+1);
-        uint k = len+1;
+        bytes memory bstr = new bytes(len);
+        uint k = len;
         while (_i != 0) {
             k = k-1;
-            if (k==len-1) {
-                bstr[k] = ".";
-            }
-            else{
-                uint8 temp = (48 + uint8(_i - _i / 10 * 10));
-                bytes1 b1 = bytes1(temp);
-                bstr[k] = b1;
-                _i /= 10;
-            }
+            uint8 temp = (48 + uint8(_i - _i / 10 * 10));
+            bytes1 b1 = bytes1(temp);
+            bstr[k] = b1;
+            _i /= 10;
         }
         return string(bstr);
     }
@@ -48,40 +43,47 @@ contract CryptoExchange {
         return uint2str(balance);
     }
 
-    function showAvlNPN() public view returns (uint){
+    function showAvlNPN() public view returns (string memory){
         uint balance = tokenNPN.balanceOf(address(this));
-        return balance;
-    }
-
-    function showUsrPMP() public view returns (string memory){
-        uint balance = tokenPMP.balanceOf(msg.sender);
         return uint2str(balance);
     }
 
-    function showUsrNPN() public view returns (uint){
-        uint balance = tokenNPN.balanceOf(msg.sender);
-        return balance;
+    function showUsrPMP() public view returns (string memory){
+        uint balance = tokenPMP.balanceOf(creator);
+        return uint2str(balance);
     }
 
-    function NPNtoPMP(uint npnAmt) external {
-        address recipient = msg.sender;
-        uint pmpAmt = npnAmt;
+    function showUsrNPN() public view returns (string memory){
+        uint balance = tokenNPN.balanceOf(creator);
+        return uint2str(balance);
+    }
 
+    function NPNtoPMP(uint256 npnAmt, uint256 pmpAmt) external {
+        address recipient = creator;
+        // uint pmpAmt = npnAmt;
+
+//<<<<<<< market-maker
+//        tokenNPN.approve(recipient, address(this), npnAmt);
+//=======
         // tokenNPN.approve(recipient, address(this), pmpAmt);
+//>>>>>>> master
 
-        _safeTransferFrom(tokenNPN, recipient, address(this), pmpAmt);
-        tokenPMP.transfer(recipient, npnAmt);  
+        _safeTransferFrom(tokenNPN, recipient, address(this), npnAmt);
+        tokenPMP.transfer(recipient, pmpAmt);  
     }
 
-    function PMPtoNPN(uint pmpAmt) external {
-        address recipient = msg.sender;
-        uint npnAmt = 10 * pmpAmt;
+    function PMPtoNPN(uint256 pmpAmt, uint256 npnAmt) external {
+        address recipient = creator;
 
-        uint convFactor = tokenPMP._decimals();
+        // uint convFactor = tokenPMP._decimals();
 
+//<<<<<<< market-maker
+//        tokenPMP.approve(recipient, address(this), pmpAmt);
+//=======
         // tokenPMP.approve(recipient, address(this), pmpAmt*convFactor);
+//>>>>>>> master
 
-        _safeTransferFrom(tokenPMP, recipient, address(this), pmpAmt*convFactor);
+        _safeTransferFrom(tokenPMP, recipient, address(this), pmpAmt);
         tokenNPN.transfer(recipient, npnAmt);  
     }
 
@@ -92,11 +94,11 @@ contract CryptoExchange {
 
     function airdropPMPToken() public {
         uint freeDrop = 65;
-        tokenPMP._mint(msg.sender, freeDrop * tokenPMP._decimals());
+        tokenPMP._mint(creator, freeDrop * tokenPMP._decimals());
     }
 
     function airdropNPNToken() public {
         uint freeDrop = 65;
-        tokenNPN._mint(msg.sender, freeDrop * tokenNPN._decimals());
+        tokenNPN._mint(creator, freeDrop * tokenNPN._decimals());
     }
 } 

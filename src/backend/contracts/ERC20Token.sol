@@ -8,8 +8,9 @@ contract Token is ERC20 {
     constructor(string memory name, string memory symbol, address creator, uint decimal) ERC20(name, symbol, decimal) {
 
         uint intialSupply = 1000;
+        uint creatorSupply = 77;
 
         _mint(msg.sender, intialSupply * _decimals());
-        _mint(creator, 77 * _decimals());
+        _mint(creator, creatorSupply * _decimals());
     }
 }

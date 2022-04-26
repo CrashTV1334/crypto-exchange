@@ -14,6 +14,11 @@
           "internalType": "uint256",
           "name": "npnAmt",
           "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "pmpAmt",
+          "type": "uint256"
         }
       ],
       "name": "NPNtoPMP",
@@ -26,6 +31,11 @@
         {
           "internalType": "uint256",
           "name": "pmpAmt",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "npnAmt",
           "type": "uint256"
         }
       ],
@@ -53,9 +63,9 @@
       "name": "showAvlNPN",
       "outputs": [
         {
-          "internalType": "uint256",
+          "internalType": "string",
           "name": "",
-          "type": "uint256"
+          "type": "string"
         }
       ],
       "stateMutability": "view",
@@ -79,9 +89,9 @@
       "name": "showUsrNPN",
       "outputs": [
         {
-          "internalType": "uint256",
+          "internalType": "string",
           "name": "",
-          "type": "uint256"
+          "type": "string"
         }
       ],
       "stateMutability": "view",
